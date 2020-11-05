@@ -1,7 +1,15 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <ListPerson msg="Welcome to Your Vue.js App"/>
+    <div class="site">
+      <div class="header">
+        <div class="header__logo">
+          <img src="~@/assets/img/logo.png" alt="">
+        </div>
+      </div>
+      <div class="container">
+        <ListPerson/>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -16,13 +24,7 @@ export default {
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss" type="text/scss">
+  @import "~@/style/main.scss";
+  // @import "~@/style/adaptive.css";
 </style>

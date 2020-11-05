@@ -1,6 +1,23 @@
 <template>
-  <div class="hello">
-    start
+  <div class="content peoples">
+    
+    <div class="peoples__item" v-for="people in peoples" :key="people">
+      <div class="peoples__name">
+        {{people.name}}
+      </div>
+      <div class="peoples__characteristics">
+        <div class="peoples__characteristics-params">
+          <p>Gender: <strong>{{people.gender}}</strong> </p>
+          <p>Height: <strong>{{people.height}}</strong> </p>
+          <p>Mass: <strong>{{people.mass}}</strong> </p>
+        </div>
+        <div class="peoples__characteristics-starship">
+          <strong>Starships</strong>
+        </div>
+      </div>
+      
+    </div>
+
   </div>
 </template>
 
