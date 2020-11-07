@@ -14,9 +14,18 @@
         <div class="peoples__characteristics-starship">
           <strong>Starships:</strong>
           <div v-for="starship in people.starshipsResults" :key="starship.index">
-            <span>{{starship.name}}</span>
+            <span v-if="people.starshipsResults == 'false' ">I haven't starship (</span>
+            <span v-else>{{starship.name}}</span>
           </div>
         </div>
+
+        <!-- <div v-else class="peoples__characteristics-starship">
+          <strong>Starships:</strong>
+          <div>
+            <span>I haven't starship (</span>
+          </div>
+        </div> -->
+
       </div>
       
     </div>
@@ -46,6 +55,7 @@ export default {
       const getPeople = await axios.get(`${baseUrl}/people/`);
 
       const newRender = [];
+
       console.time("test");
       for (let people of getPeople.data.results) {
 
@@ -73,6 +83,11 @@ export default {
           // console.log("ответ",promisesResult);
 
           // console.log(people.name);
+        } else {
+          // console.log("Нет кораблей", people.name);
+          // people.starships.push("нет");
+          // people.starships.push(false);
+            starships.push(false);
         }
         
         people.starshipsResults = starships;
