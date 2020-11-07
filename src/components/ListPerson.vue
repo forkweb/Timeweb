@@ -13,7 +13,7 @@
         </div>
         <div class="peoples__characteristics-starship">
           <strong>Starships:</strong>
-          <div v-for="starship in people.starshipsResults" :key="starship">
+          <div v-for="starship in people.starshipsResults" :key="starship.index">
             <span>{{starship.name}}</span>
           </div>
         </div>
@@ -46,25 +46,41 @@ export default {
       const getPeople = await axios.get(`${baseUrl}/people/`);
 
       const newRender = [];
-
+      console.time("test");
       for (let people of getPeople.data.results) {
 
         const starships = [];
 
         if (people.starships.length) {
           // Todo: кэшировать запросы
-          for(const urlstarship of people.starships) {
-            const getStarship = await axios.get(urlstarship);
-            starships.push(getStarship.data);
-          }
+          // вариант с последовтаельной загрузкой
+          // for(const urlstarship of people.starships) {
+          //   const getStarship = await axios.get(urlstarship);
+          //   starships.push(getStarship.data);
+          // }
 
-          console.log(people.name);
+          // вариант с параллельной загрузкой 
+          const promises = [];
+          for (const urlstarship of people.starships) {
+            const promise = axios.get(urlstarship);
+            promises.push(promise);
+          }
+          const promisesResult = await Promise.all(promises);
+          promisesResult.forEach((starship) => {
+            starships.push(starship.data);
+          });
+          
+          // console.log("ответ",promisesResult);
+
+          // console.log(people.name);
         }
         
         people.starshipsResults = starships;
 
         newRender.push(people);
       }
+
+      console.timeEnd("test");
 
       this.peoples = newRender;
 
