@@ -1,7 +1,7 @@
 <template>
   <div class="content peoples">
     
-    <div class="peoples__item" v-for="people in peoples" :key="people">
+    <div class="peoples__item" v-for="people in peoples" :key="people.index">
       <div class="peoples__name">
         {{people.name}}
       </div>
@@ -12,7 +12,10 @@
           <p>Mass: <strong>{{people.mass}}</strong> </p>
         </div>
         <div class="peoples__characteristics-starship">
-          <strong>Starships</strong>
+          <strong>Starships:</strong>
+          <div v-for="starship in people.starshipsResults" :key="starship">
+            <span>{{starship.name}}</span>
+          </div>
         </div>
       </div>
       
@@ -29,36 +32,55 @@ export default {
   data() {
     return {
       peoples: [],
+      // starships: [],
     }
   },
   computed: {
     
   },
   methods: {
-    GetPoples() {
-      axios.get(`${baseUrl}/people/`).then(response => (this.peoples = response.data.results));
+    async GetPoples() {
+
+      // axios.get(`${baseUrl}/people/`).then(response => (this.peoples = response.data.results));
+
+      const getPeople = await axios.get(`${baseUrl}/people/`);
+
+      const newRender = [];
+
+      for (let people of getPeople.data.results) {
+
+        const starships = [];
+
+        if (people.starships.length) {
+          // Todo: кэшировать запросы
+          for(const urlstarship of people.starships) {
+            const getStarship = await axios.get(urlstarship);
+            starships.push(getStarship.data);
+          }
+
+          console.log(people.name);
+        }
+        
+        people.starshipsResults = starships;
+
+        newRender.push(people);
+      }
+
+      this.peoples = newRender;
+
+      // this.peoples = getPeople.data.results;
+      // console.log(GetPeople);
+
     },
   },
   mounted(){
     this.GetPoples();
+    // this.GetStarships();
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+
 </style>
