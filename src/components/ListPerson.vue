@@ -29,33 +29,46 @@
       </div>
       
     </div>
-
+    <Pagination :total="total" :item="peoples.length" @page-changed="GetPoples"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+
 const baseUrl = 'https://swapi.dev/api';
+
+import Pagination from "../components/Pagination";
+
 export default {
   name: 'ListPerson',
   data() {
     return {
       peoples: [],
-      // starships: [],
+      page: 1,
+      total: 0
     }
+  },
+  components: {
+    Pagination
+  },
+  created() {
+    this.GetPoples(this.page);
   },
   computed: {
     
   },
   methods: {
-    async GetPoples() {
+    async GetPoples(pageNumber) {
 
       // axios.get(`${baseUrl}/people/`).then(response => (this.peoples = response.data.results));
 
-      const getPeople = await axios.get(`${baseUrl}/people/`);
+      const getPeople = await axios.get(`${baseUrl}/people/?page=${pageNumber}`);
+
+      this.total = getPeople.data.count;
 
       const newRender = [];
-
+     
       console.time("test");
       for (let people of getPeople.data.results) {
 
@@ -105,7 +118,7 @@ export default {
     },
   },
   mounted(){
-    this.GetPoples();
+    // this.GetPoples(this.page);
     // this.GetStarships();
   }
 }
