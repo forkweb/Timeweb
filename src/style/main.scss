@@ -46,3 +46,26 @@
     }
   }
 }
+
+.pagination {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+  &__list {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    li {
+      margin: 0 5px;
+    }
+    button {
+      border: none;
+      background-color: rgb(213 38 239 / 31%);
+      border-radius: 2px;
+      padding: 7px;
+      cursor: pointer;
+    }
+  }
+}
